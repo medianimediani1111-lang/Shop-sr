@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
@@ -278,6 +280,7 @@
             cursor: pointer;
         }
 
+        /* تعديل شريط التنقل السفلي والرموز لتصبح مفرغة وخطية */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -298,10 +301,16 @@
             justify-content: center;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 22px;
             width: 33.33%;
             height: 100%;
             position: relative;
+            transition: color 0.3s ease;
+        }
+
+        /* تنسيق الرموز المفرغة القادمة من المكتبة لتبدو مثل الصورة تماماً */
+        .nav-item i {
+            font-size: 22px; 
+            font-weight: 300; /* خط رقيق */
         }
 
         .nav-item.active { color: var(--gold-primary); }
@@ -614,9 +623,16 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="closeAdmin(); window.scrollTo({top: 0, behavior: 'smooth'});">🏠</div>
-        <div class="nav-item" onclick="openCartDirectly()">🛒<span class="cart-badge-num" id="cartBadge">0</span></div>
-        <div class="nav-item" onclick="loginAdmin()">👤</div>
+        <div class="nav-item active" onclick="closeAdmin(); window.scrollTo({top: 0, behavior: 'smooth'});">
+            <i class="fa-solid fa-house"></i>
+        </div>
+        <div class="nav-item" onclick="openCartDirectly()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge-num" id="cartBadge">0</span>
+        </div>
+        <div class="nav-item" onclick="loginAdmin()">
+            <i class="fa-regular fa-user"></i>
+        </div>
     </div>
 
     <div id="checkoutModal" class="modal-overlay">
@@ -646,7 +662,7 @@
                     <div class="input-wrapper"><span class="icon">🏢</span><input type="text" id="city" placeholder="Adresse" required></div>
                 </div>
                 <div class="form-group">
-                    <label id="lblWilaya">الولاية <span>*</span></label>
+                    <label id="lblWilaya">  الولاية  <span>*</span></label>
                     <div class="input-wrapper"><span class="icon">📍</span><select id="wilaya" onchange="updateTotal()" required><option value="">اختر الولاية</option></select></div>
                 </div>
 
@@ -973,7 +989,6 @@
             document.getElementById('displayTotal').innerText = (pTotal + ship).toLocaleString() + " DZD";
         }
 
-        // تم ربط الكود بالمتغيرات الدقيقة الموجودة في حسابك لتصل الرسائل كاملة
         function sendOrder(event) {
             event.preventDefault();
             
@@ -983,7 +998,6 @@
                 return;
             }
 
-            // تجميع معلومات المنتجات (الاسم، السعر الفردي، والكمية الكلية)
             let productTitles = selectedItems.map(item => item.title).join(", ");
             let productPrices = selectedItems.map(item => item.price.toLocaleString() + " دج").join(", ");
             let productQuantities = selectedItems.map(item => item.qty).join(", ");
@@ -996,7 +1010,6 @@
             btnSubmit.innerText = currentLang === 'ar' ? "⏳ جاري إرسال الطلب..." : "⏳ Sending...";
             btnSubmit.disabled = true;
 
-            // هذه المتغيرات مطابقة 100% للأسماء الموجودة في حسابك على قالب EmailJS
             let templateParams = {
                 "customer_name": document.getElementById('fullname').value,
                 "customer_phone": document.getElementById('phone').value,
@@ -1128,7 +1141,6 @@
             }
         }
 
-        // اسم المستخدم وكلمة المرور الافتراضية للوحة التحكم
         function loginAdmin() {
             let user = prompt("User:"); let pass = prompt("Password:");
             if (user === "123" && pass === "123") { 
